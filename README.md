@@ -58,7 +58,22 @@ Video Duplicate Finder is licensed under GPLv3
 - .NET 7.x
 - Visual Studio 2022 is recommended
 
+# CLI Usage
+The application also supports command-line operations for certain tasks, such as detecting duplicate segments.
+
+**Note:** Replace `./VDF.GUI` with `dotnet VDF.GUI.dll` or the appropriate command for your system if running from the DLL.
+
+## Usage Examples
+```bash
+# Basic duplicate segment detection (detects if end of video matches start)
+./VDF.GUI detect --input myvideo.mp4
+
+# With custom similarity threshold (0.0 to 1.0)
+./VDF.GUI detect --input myvideo.mp4 --similarity-threshold 0.85
+```
+
 # Committing
-- Create a pull request for each addition or fix - do NOT merge them into one PR
-- Unless it refers to an existing issue, write into your pull request what it does
-- For larger PRs I recommend you create an issue for discussion first
+- Create a pull request for each addition or fix - do NOT merge them into one PR.
+- Unless it refers to an existing issue, write into your pull request what it does.
+- For larger PRs I recommend you create an issue for discussion first.
+- This project follows [Conventional Commits](https://www.conventionalcommits.org/) for commit messages to ensure clarity and support semantic versioning. Please make sure your commit messages adhere to this standard.

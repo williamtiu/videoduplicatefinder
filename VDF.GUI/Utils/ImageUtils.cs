@@ -15,13 +15,13 @@
 //
 
 
+using System;
+using System.Runtime.InteropServices; // For MemoryMarshal
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
-using System;
-using System.Runtime.InteropServices; // For MemoryMarshal
 
 namespace VDF.GUI.Utils {
 	static class ImageUtils {
@@ -95,28 +95,31 @@ namespace VDF.GUI.Utils {
 					int expectedSourceLength = bgraImage.Width * bgraImage.Height * 4;
 					if (sourcePixelData.Length == expectedSourceLength && destinationSpan.Length == expectedSourceLength) {
 						sourcePixelData.CopyTo(destinationSpan);
-					} else {
+					}
+					else {
 						// Fallback or error if direct copy is not possible due to size mismatch
 						// This might indicate stride differences or padding.
 						// A row-by-row copy would be needed here if strides differ but data per row is same.
 						// For now, log if this less common path is hit and return null if buffers don't match.
 						// VDF.Core.Utils.Logger.Instance.Error($"JoinImages: Buffer size mismatch. Source: {sourcePixelData.Length}, Expected Source: {expectedSourceLength}, Dest: {destinationSpan.Length}");
-                        // Attempt row-by-row if total data is same but strides might differ (though less likely for Bgra32)
-                        if (sourcePixelData.Length == destinationSpan.Length) {
-                             int sourceStride = bgraImage.Width * 4; // bytes per row in source
-                             int destStride = lockedFramebuffer.RowBytes;
-                             for(int y=0; y < bgraImage.Height; y++) {
-                                 Span<byte> sourceRow = sourcePixelData.Slice(y * sourceStride, sourceStride);
-                                 Span<byte> destRow = destinationSpan.Slice(y * destStride, sourceStride); // Assuming dest can take sourceStride bytes
-                                 sourceRow.CopyTo(destRow);
-                             }
-                        } else {
-						    return null; // Or throw an exception
-                        }
+						// Attempt row-by-row if total data is same but strides might differ (though less likely for Bgra32)
+						if (sourcePixelData.Length == destinationSpan.Length) {
+							int sourceStride = bgraImage.Width * 4; // bytes per row in source
+							int destStride = lockedFramebuffer.RowBytes;
+							for (int y = 0; y < bgraImage.Height; y++) {
+								Span<byte> sourceRow = sourcePixelData.Slice(y * sourceStride, sourceStride);
+								Span<byte> destRow = destinationSpan.Slice(y * destStride, sourceStride); // Assuming dest can take sourceStride bytes
+								sourceRow.CopyTo(destRow);
+							}
+						}
+						else {
+							return null; // Or throw an exception
+						}
 					}
 				}
 				return writeableBitmap;
-			} catch (Exception ex) {
+			}
+			catch (Exception ex) {
 				// VDF.Core.Utils.Logger.Instance.Error($"Error in JoinImages during pixel data conversion: {ex.Message}");
 				return null; // Fallback or error handling
 			}

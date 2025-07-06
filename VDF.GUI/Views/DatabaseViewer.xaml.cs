@@ -29,10 +29,10 @@ namespace VDF.GUI.Views {
 				RequestedThemeVariant = Avalonia.Styling.ThemeVariant.Light;
 		}
 
-		private void DatabaseViewer_Closing(object? sender, System.ComponentModel.CancelEventArgs e) 
+		private void DatabaseViewer_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
 			=> ((DatabaseViewerVM)DataContext!).Save();
 
-		void InitializeComponent() => AvaloniaXamlLoader.Load(this);		
+		void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
 	}
 }

@@ -14,10 +14,10 @@
 // */
 //
 
-using ProtoBuf;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using ProtoBuf;
 using VDF.Core.Utils;
 
 namespace VDF.Core {
@@ -50,7 +50,7 @@ namespace VDF.Core {
 				_Path = fileInfo.FullName;
 				Folder = fileInfo.Directory?.FullName ?? string.Empty;
 			}
-		 }
+		}
 		[ProtoMember(2)]
 		public string Folder;
 		[ProtoMember(3)]

@@ -236,13 +236,13 @@ namespace VDF.GUI.ViewModels {
 			IsBusyText = "Finding sub-clip matches... This may take a while.";
 			try {
 				var scanEngine = new Core.ScanEngine(); // Consider if a shared instance is better
-				// It's important to use the settings from SettingsFile.Instance for consistency with the rest of the app
+														// It's important to use the settings from SettingsFile.Instance for consistency with the rest of the app
 				var coreSettings = new Core.Settings {
 					Percent = SettingsFile.Instance.Percent,
 					IgnoreBlackPixels = SettingsFile.Instance.IgnoreBlackPixels,
 					IgnoreWhitePixels = SettingsFile.Instance.IgnoreWhitePixels,
-                    // ThumbnailCount = SettingsFile.Instance.Thumbnails, // Obsolete: Remove this line
-                    ThumbnailPositions = new List<Core.ThumbnailPositionSetting>(SettingsFile.Instance.ThumbnailPositions),
+					// ThumbnailCount = SettingsFile.Instance.Thumbnails, // Obsolete: Remove this line
+					ThumbnailPositions = new List<Core.ThumbnailPositionSetting>(SettingsFile.Instance.ThumbnailPositions),
 					ExtendedFFToolsLogging = SettingsFile.Instance.ExtendedFFToolsLogging
 					// Add any other relevant settings from SettingsFile to Core.Settings if needed by FindSubClipMatches
 				};
@@ -257,14 +257,15 @@ namespace VDF.GUI.ViewModels {
 
 				if (subClipMatches.Count == 0) {
 					await MessageBoxService.Show("No sub-clip matches found.");
-				} else {
+				}
+				else {
 					var sb = new StringBuilder();
 					sb.AppendLine($"Found {subClipMatches.Count} potential sub-clip match(es):");
 					int displayCount = 0;
 					foreach (var match in subClipMatches) {
 						sb.AppendLine($"Main: {match.MainVideo.Path}");
 						sb.AppendLine($"  Sub: {match.SubClipVideo.Path}");
-						sb.AppendLine($"  Matched at (main video times %): {string.Join(", ", match.MainVideoMatchStartTimes.Select(t => (t*100).ToString("F1")))}");
+						sb.AppendLine($"  Matched at (main video times %): {string.Join(", ", match.MainVideoMatchStartTimes.Select(t => (t * 100).ToString("F1")))}");
 						sb.AppendLine();
 						displayCount++;
 						if (displayCount >= 10) { // Limit direct display
@@ -274,40 +275,40 @@ namespace VDF.GUI.ViewModels {
 					}
 					await MessageBoxService.Show(sb.ToString(), title: "Sub-Clip Matches Found");
 				}
-			} catch (Exception ex) {
+			}
+			catch (Exception ex) {
 				Logger.Instance.Info($"ERROR: Error finding sub-clips: {ex.Message}"); // Corrected Logger call
 				await MessageBoxService.Show($"An error occurred while finding sub-clips: {ex.Message}", title: "Error");
-			} finally {
+			}
+			finally {
 				IsBusy = false;
 				IsBusyText = string.Empty;
 			}
 		});
 
-        // The actual method to open the window
+		// The actual method to open the window
 		private void OpenSegmentComparisonWindow() {
-		   var view = new SegmentComparisonView();
-		   view.DataContext = new SegmentComparisonVM();
-		   // For Avalonia, showing a window might need to be done via a window manager service or by ShowDialog(owner)
-		   // For simplicity, and if ApplicationHelpers.MainWindow is accessible and appropriate:
-           if (ApplicationHelpers.MainWindow != null)
-           {
-                view.ShowDialog(ApplicationHelpers.MainWindow);
-           }
-           else
-           {
-                view.Show(); // Fallback if no owner can be determined easily
-           }
+			var view = new SegmentComparisonView();
+			view.DataContext = new SegmentComparisonVM();
+			// For Avalonia, showing a window might need to be done via a window manager service or by ShowDialog(owner)
+			// For simplicity, and if ApplicationHelpers.MainWindow is accessible and appropriate:
+			if (ApplicationHelpers.MainWindow != null) {
+				view.ShowDialog(ApplicationHelpers.MainWindow);
+			}
+			else {
+				view.Show(); // Fallback if no owner can be determined easily
+			}
 		}
 		// Ensure OpenSegmentComparisonCommand is initialized. This usually happens in the constructor.
 		// If MainWindowVM is not partial or this is not the right place, this initialization needs to be moved.
 		// For the purpose of this task, I'm adding a placeholder initialization.
 		// This should be integrated into the actual MainWindowVM constructor.
 		public void EnsureCommandsInitialized() {
-		// This is a conceptual method. Command should be initialized in constructor.
-		// if (OpenSegmentComparisonCommand == null) {
-		//     OpenSegmentComparisonCommand = ReactiveCommand.Create(OpenSegmentComparisonWindow); // This line should be in the constructor
-		// }
-	}
+			// This is a conceptual method. Command should be initialized in constructor.
+			// if (OpenSegmentComparisonCommand == null) {
+			//     OpenSegmentComparisonCommand = ReactiveCommand.Create(OpenSegmentComparisonWindow); // This line should be in the constructor
+			// }
+		}
 		// Removed duplicate constructor and EnsureCommandsInitialized method
 	}
 }

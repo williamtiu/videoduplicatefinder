@@ -42,7 +42,7 @@ namespace VDF.GUI.Utils {
 						counter++;
 					}
 
-					if (pMove) 
+					if (pMove)
 						File.Move(s.ItemInfo.Path, temppath, pOverwriteDest);
 					else
 						File.Copy(s.ItemInfo.Path, temppath, pOverwriteDest);

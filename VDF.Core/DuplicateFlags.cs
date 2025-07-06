@@ -16,8 +16,7 @@
 
 namespace VDF.Core {
 	[Flags]
-	public enum DuplicateFlags : short
-	{
+	public enum DuplicateFlags : short {
 		None = 0,
 		Flipped = 1,
 	};

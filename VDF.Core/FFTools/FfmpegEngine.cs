@@ -32,7 +32,7 @@ namespace VDF.Core.FFTools {
 		public static bool UseNativeBinding;
 		static FfmpegEngine() => FFmpegPath = FFToolsUtils.GetPath(FFToolsUtils.FFTool.FFmpeg) ?? string.Empty;
 
-		
+
 		public static unsafe byte[]? GetThumbnail(FfmpegSettings settings, bool extendedLogging) {
 
 			try {
@@ -158,18 +158,18 @@ namespace VDF.Core.FFTools {
 				else if (settings.GrayScale == 1 && bytes.Length != 256) {
 					bytes = null;
 					// This specific detail will be part of the consolidated log message if extendedLogging is true
-					if(extendedLogging) errOut += $"{Environment.NewLine}CustomDetail: graybytes length != 256";
+					if (extendedLogging) errOut += $"{Environment.NewLine}CustomDetail: graybytes length != 256";
 				}
 			}
 			catch (Exception e) {
-				if(extendedLogging) errOut += $"{Environment.NewLine}ExceptionDetail: {e.GetType().Name}: {e.Message}";
+				if (extendedLogging) errOut += $"{Environment.NewLine}ExceptionDetail: {e.GetType().Name}: {e.Message}";
 				bytes = null;
 			}
 			finally {
 				try {
 					if (process != null && !process.HasExited) {
 						process.Kill();
-						if(extendedLogging) errOut += $"{Environment.NewLine}CustomDetail: Process was killed due to an issue or timeout.";
+						if (extendedLogging) errOut += $"{Environment.NewLine}CustomDetail: Process was killed due to an issue or timeout.";
 					}
 				}
 				catch {/* Best effort */}
@@ -183,12 +183,13 @@ namespace VDF.Core.FFTools {
 
 				if (extendedLogging) {
 					logMessage += $":{Environment.NewLine}FFmpeg Path: {FFmpegPath}{Environment.NewLine}Arguments: {ffmpegArguments}";
-                    if (!string.IsNullOrEmpty(errOut)) {
-                        logMessage += $"{Environment.NewLine}Stderr: {errOut}";
-                    }
-                } else if (bytes == null && string.IsNullOrEmpty(errOut)) {
-                    logMessage += ". No extended error output.";
-                }
+					if (!string.IsNullOrEmpty(errOut)) {
+						logMessage += $"{Environment.NewLine}Stderr: {errOut}";
+					}
+				}
+				else if (bytes == null && string.IsNullOrEmpty(errOut)) {
+					logMessage += ". No extended error output.";
+				}
 				Logger.Instance.Info(logMessage);
 			}
 			return bytes;
@@ -251,7 +252,8 @@ namespace VDF.Core.FFTools {
 
 			if (numberOfThumbnails == 1) {
 				timestamps.Add(segmentStart + TimeSpan.FromSeconds(segmentDuration.TotalSeconds / 2));
-			} else {
+			}
+			else {
 				for (int i = 0; i < numberOfThumbnails; i++) {
 					double stepRatio = (double)i / (numberOfThumbnails - 1);
 					TimeSpan timestamp = segmentStart + TimeSpan.FromSeconds(segmentDuration.TotalSeconds * stepRatio);
@@ -271,7 +273,8 @@ namespace VDF.Core.FFTools {
 
 				if (thumbnailData != null && thumbnailData.Length > 0) {
 					result.Add(ts.TotalSeconds, thumbnailData);
-				} else {
+				}
+				else {
 					Logger.Instance.Info($"WARNING: GetThumbnailsForSegment: Failed to retrieve thumbnail for {videoPath} at {ts}.");
 				}
 			}

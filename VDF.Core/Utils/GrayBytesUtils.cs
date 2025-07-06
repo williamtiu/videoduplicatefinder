@@ -46,10 +46,9 @@ namespace VDF.Core.Utils {
 
 			byte[] buffer = new byte[GrayByteValueLength];
 			int stride = 0;
-			tempImage.ProcessPixelRows(pixelAccessor =>
-			{
+			tempImage.ProcessPixelRows(pixelAccessor => {
 				stride = pixelAccessor.GetRowSpan(0).Length;
-			}); 
+			});
 			int bytes = stride * original.Height;
 
 			int count = 0, all = original.Width * original.Height;

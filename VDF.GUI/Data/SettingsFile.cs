@@ -334,7 +334,7 @@ namespace VDF.GUI.Data {
 			// 	if (int.TryParse(n.Value, out var value))
 			// 		Instance.Thumbnails = value; // This line would cause error if not removed/updated
 			// New ThumbnailPositions will be handled by JSON deserialization if present in new format,
-            // or default if loading very old XML that doesn't have it.
+			// or default if loading very old XML that doesn't have it.
 			// If specific migration from an old integer "Thumbnails" to ThumbnailPositions is needed,
 			// it would require more complex logic here, e.g., if (Instance.ThumbnailPositions.Count == 0 && oldThumbnailsIntValue > 0) { create based on old int }
 			// For now, direct deserialization of the new format is assumed for JSON, and default for XML.
